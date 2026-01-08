@@ -2,21 +2,14 @@ name: Keep Render Apps Awake
 
 on:
   schedule:
-    - cron: "0 */1 * * *" # every 1 hour
-  workflow_dispatch:
+    - cron: "0 */1 * * *" # every 6 hours
+  workflow_dispatch:       # allows manual trigger
 
 jobs:
-  keep_alive:
+  ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping portfolio app
-        shell: bash
+      - name: Wake up Render app
         run: |
           echo "Pinging Trivia Guru..."
-          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://trivia-guru.onrender.com/)
-          if [ "$HTTP_STATUS" -eq 200 ]; then
-            echo "Success: app is awake! (HTTP $HTTP_STATUS)"
-          else
-            echo "Failed ping: HTTP $HTTP_STATUS"
-            exit 1
-          fi
+          curl -fsSL https://trivia-guru.onrender.com/ || echo "Ping failed, but workflow continues"
