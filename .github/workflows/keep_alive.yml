@@ -6,9 +6,17 @@ on:
   workflow_dispatch:
 
 jobs:
-  ping:
+  keep_alive:
     runs-on: ubuntu-latest
     steps:
       - name: Ping portfolio app
+        shell: bash
         run: |
-          curl -L --max-time 100 https://trivia-guru.onrender.com/
+          echo "Pinging Trivia Guru..."
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://trivia-guru.onrender.com/)
+          if [ "$HTTP_STATUS" -eq 200 ]; then
+            echo "Success: app is awake! (HTTP $HTTP_STATUS)"
+          else
+            echo "Failed ping: HTTP $HTTP_STATUS"
+            exit 1
+          fi
