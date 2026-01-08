@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: Ping portfolio app
         run: |
-          curl -L --max-time 30 https://trivia-guru.onrender.com/
+          curl -L --max-time 100 https://trivia-guru.onrender.com/
