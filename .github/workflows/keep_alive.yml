@@ -1,0 +1,14 @@
+name: Keep Render Apps Awake
+
+on:
+  schedule:
+    - cron: "0 */1 * * *" # every 1 hour
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping portfolio app
+        run: |
+          curl -L --max-time 30 https://trivia-guru.onrender.com/
